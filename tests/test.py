@@ -16,6 +16,25 @@ class BasicTests(unittest.TestCase):
         self.assertEqual(result.status_code, 200)
         self.assertEqual(result.data.decode(), "Hello, World!")
 
+    # --- NUEVOS TESTS AÑADIDOS PARA LA PRÁCTICA ---
+
+    def test_ruta_no_encontrada(self):
+        # Prueba qué pasa si un usuario entra a una URL que no existe
+        result = self.app.get('/pagina-falsa-que-no-existe')
+        # Debe devolver un error 404 (Not Found)
+        self.assertEqual(result.status_code, 404)
+
+    def test_metodo_no_permitido(self):
+        # Prueba intentar enviar un formulario (POST) a la página principal
+        result = self.app.post('/')
+        # Debe devolver un error 405 (Method Not Allowed) porque solo acepta GET
+        self.assertEqual(result.status_code, 405)
+
+    def test_tipo_de_contenido(self):
+        # Comprueba que el tipo de contenido que devuelve es texto (HTML)
+        result = self.app.get('/')
+        self.assertIn('text/html', result.content_type)
+
 
 if __name__ == "__main__":
     unittest.main()
